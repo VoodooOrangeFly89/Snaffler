@@ -1,0 +1,30 @@
+{
+  "pathTargets": [
+    "\\\\SERVER\\Share",
+    "C:\\Users\\Public"
+  ],
+  "computerTargets": [
+    "DC01",
+    "FILE01"
+  ],
+  "domain": "CORP.LOCAL",
+  "domainController": "DC01.CORP.LOCAL",
+  "ldapFilter": "(objectClass=computer)",
+  "shareFinderEnabled": true,
+  "scanSysvol": true,
+  "scanNetlogon": true,
+  "domainUserRules": false,
+  "shareThreads": 30,
+  "treeThreads": 20,
+  "fileThreads": 50,
+  "maxFileQueue": 200000,
+  "maxSizeToGrep": 1000000,
+  "maxSizeToSnaffle": 10000000,
+  "matchContextBytes": 200,
+  "outputFile": "./snaffler-results.json",
+  "logLevel": "info",
+  "logType": "json",
+  "enableSnaffle": true,
+  "snaffleOutputDir": "./snaffle-output",
+  "ruleDir": "./src/rules/default-rules"
+}

@@ -1,0 +1,34 @@
+{
+  "ClassifierRules": [
+    {
+      "RuleName": "InterestingShares",
+      "Description": "Shares that are likely to contain interesting data",
+      "EnumerationScope": "ShareEnumeration",
+      "MatchLocation": "ShareName",
+      "WordListType": "Contains",
+      "WordList": ["backup", "share", "data", "files", "docs", "users", "home"],
+      "MatchAction": "Relay",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "AdminShares",
+      "Description": "Administrative shares",
+      "EnumerationScope": "ShareEnumeration",
+      "MatchLocation": "ShareName",
+      "WordListType": "Regex",
+      "WordList": ["^[A-Z]\\$$", "^ADMIN\\$$", "^IPC\\$$"],
+      "MatchAction": "Discard",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "SystemShares",
+      "Description": "SYSVOL and NETLOGON shares",
+      "EnumerationScope": "ShareEnumeration",
+      "MatchLocation": "ShareName",
+      "WordListType": "Exact",
+      "WordList": ["SYSVOL", "NETLOGON"],
+      "MatchAction": "Relay",
+      "Triage": "Yellow"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "ClassifierRules": [
+    {
+      "RuleName": "PasswordFiles",
+      "Description": "Files with 'password' in the name",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Contains",
+      "WordList": ["password", "passwd", "pwd", "credentials", "creds"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "PrivateKeys",
+      "Description": "SSH and other private key files",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Contains",
+      "WordList": ["id_rsa", "id_dsa", "id_ecdsa", "id_ed25519", ".key", ".pem", "private"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "ConfigFiles",
+      "Description": "Configuration files that may contain secrets",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["config", "conf", "ini", "env", "yaml", "yml"],
+      "MatchAction": "Relay",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "DatabaseFiles",
+      "Description": "Database files",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["db", "sqlite", "sqlite3", "mdb", "accdb"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "PowerShellScripts",
+      "Description": "PowerShell scripts",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["ps1", "psm1", "psd1"],
+      "MatchAction": "Relay",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "BashScripts",
+      "Description": "Bash/shell scripts",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["sh", "bash"],
+      "MatchAction": "Relay",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "PasswordInContent",
+      "Description": "Password strings in file content",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "password\\s*=\\s*['\"][^'\"]{3,}['\"]",
+        "api[_-]?key\\s*=\\s*['\"][^'\"]{10,}['\"]",
+        "secret\\s*=\\s*['\"][^'\"]{5,}['\"]",
+        "token\\s*=\\s*['\"][^'\"]{10,}['\"]"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "AWSKeys",
+      "Description": "AWS access keys in content",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "AKIA[0-9A-Z]{16}",
+        "aws_access_key_id",
+        "aws_secret_access_key"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "SSNPattern",
+      "Description": "Social Security Numbers",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["\\d{3}-\\d{2}-\\d{4}"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    }
+  ]
+}

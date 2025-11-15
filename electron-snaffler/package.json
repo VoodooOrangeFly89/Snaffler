@@ -1,0 +1,47 @@
+{
+  "name": "electron-snaffler",
+  "version": "1.0.0",
+  "description": "Electron-compatible version of Snaffler for discovering sensitive files",
+  "main": "dist/core/SnafflerEngine.js",
+  "types": "dist/core/SnafflerEngine.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": [
+    "snaffler",
+    "electron",
+    "security",
+    "pentesting",
+    "file-scanner",
+    "smb",
+    "active-directory"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "react": "^18.0.0"
+  },
+  "peerDependencies": {
+    "electron": ">=20.0.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/electron-snaffler"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ]
+}

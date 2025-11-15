@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+*.js
+*.d.ts
+*.js.map
+*.d.ts.map
+snaffle-output/
+*.env
+.vscode/
+.idea/
