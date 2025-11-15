@@ -1,0 +1,525 @@
+{
+  "ClassifierRules": [
+    {
+      "RuleName": "KeepAwsKeysInCode",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "aws[_\\-\\.]?key",
+        "(\\s|\\'|\\\"|\\^|=)(A3T[A-Z0-9]|AKIA|AGPA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z2-7]{12,16}(\\s|\\'|\\\"|$)"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepDbConnStringPw",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["connectionstring.{1,200}passw"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepInlinePrivateKey",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["-----BEGIN( RSA| OPENSSH| DSA| EC| PGP)? PRIVATE KEY( BLOCK)?-----"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepPassOrKeyInCode",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "passwo?r?d\\s*=\\s*[\\'\\\"][^\\'\\\"]....",
+        "apiKey\\s*=\\s*[\\'\\\"][^\\'\\\"]....",
+        "passwo?r?d?>\\s*[^\\s<]+\\s*<",
+        "passwo?r?d?>.{3,2000}</pass",
+        "[\\s]+-passwo?r?d?",
+        "apiKey>\\s*[^\\s<]+\\s*<",
+        "[_\\-\\.]oauth\\s*=\\s*[\\'\\\"][^\\'\\\"]....",
+        "client_secret\\s*=*\\s*",
+        "<ExtendedMatchKey>ClientAuth",
+        "GIUserPassword"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepS3UriPrefixInCode",
+      "Description": "Files with content matching an AWS S3 or Apache Hadoop S3A URI Prefix",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["s3a?:\\/\\/[a-zA-Z0-9\\-\\+\\/]{2,16}"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepSlackTokensInCode",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "(xox[pboa]-[0-9]{12}-[0-9]{12}-[0-9]{12}-[a-z0-9]{32})",
+        "https://hooks.slack.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepSqlAccountCreation",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["CREATE (USER|LOGIN) .{0,200} (IDENTIFIED BY|WITH PASSWORD)"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepCSharpDbConnStringsYellow",
+      "Description": "Match SQL connection strings that appear to use integrated security (so no passwords).",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "Data Source=.+Integrated Security=(SSPI|true)",
+        "Integrated Security=(SSPI|true);.*Data Source=.+"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepCSharpDbConnStringsRed",
+      "Description": "Match SQL connection strings that appear to have a password.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "Data Source=.+(;|)Password=.+(;|)",
+        "Password=.+(;|)Data Source=.+(;|)"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepCSharpViewstateKeys",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "validationkey\\s*=\\s*[\\'\\\"][^\\'\\\"]....",
+        "decryptionkey\\s*=\\s*[\\'\\\"][^\\'\\\"]...."
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayCSharpByExtension",
+      "Description": "Files with these extensions will be searched for CSharp and ASP.NET related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "aspx", "ashx", "asmx", "asp", "cshtml",
+        "cs", "ascx", "config"
+      ],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepCSharpDbConnStringsYellow",
+        "KeepCSharpDbConnStringsRed",
+        "KeepCSharpViewstateKeys",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepCmdCredentials",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "passwo?r?d\\s*=\\s*[\\'\\\"][^\\'\\\"]....",
+        "schtasks.{1,300}(/rp\\s|/p\\s)",
+        "net user ",
+        "psexec .{0,100} -p ",
+        "net use .{0,300} /user:",
+        "cmdkey "
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayCmdByExtension",
+      "Description": "Files with these extensions will be searched for cmd.exe/batch file related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["bat", "cmd"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepCmdCredentials",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation"
+      ]
+    },
+    {
+      "RuleName": "KeepConfigByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [".htpasswd", "accounts.v4"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayConfigByExtension",
+      "Description": "Files with these extensions will be subjected to a generic search for keys and such.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "yaml", "yml", "toml", "xml", "json", "config",
+        "ini", "inf", "cnf", "conf", "properties", "env",
+        "dist", "txt", "sql", "log", "sqlite", "sqlite3",
+        "fdb", "tfvars"
+      ],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepJavaDbConnStrings",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "\\.getConnection\\(\\\"jdbc\\:",
+        "passwo?r?d\\s*=\\s*[\\'\\\"][^\\'\\\"]...."
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayJavaByExtension",
+      "Description": "Files with these extensions will be searched for Java and ColdFusion related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["jsp", "do", "java", "cfm"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepJavaDbConnStrings",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "RelayJsByExtension",
+      "Description": "Files with these extensions will be searched for JavaScript related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "js", "cjs", "mjs", "ts", "tsx",
+        "ls", "es6", "es"
+      ],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepPhpByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["LocalSettings.php"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepPhpDbConnStrings",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "mysql_connect\\s*\\(.*\\$.*\\)",
+        "mysql_pconnect\\s*\\(.*\\$.*\\)",
+        "mysql_change_user\\s*\\(.*\\$.*\\)",
+        "pg_connect\\s*\\(.*\\$.*\\)",
+        "pg_pconnect\\s*\\(.*\\$.*\\)"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayPhpByExtension",
+      "Description": "Files with these extensions will be searched for php related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["php", "phtml", "inc", "php3", "php5", "php7"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepPhpDbConnStrings",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepPerlDbConnStrings",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["DBI\\-\\>connect\\("],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayPerlByExtension",
+      "Description": "Files with these extensions will be searched for Perl related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["pl"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepPerlDbConnStrings",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepPSHistoryByName",
+      "Description": "Files with these exact names will be searched for PowerShell related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "ConsoleHost_history.txt",
+        "Visual Studio Code Host_history.txt"
+      ],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepPsCredentials",
+        "KeepCmdCredentials",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepPsCredentials",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "-SecureString",
+        "-AsPlainText",
+        "\\[Net.NetworkCredential\\]::new\\("
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayPsByExtension",
+      "Description": "Files with these extensions will be searched for PowerShell related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["psd1", "psm1", "ps1"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepPsCredentials",
+        "KeepCmdCredentials",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepPyDbConnStrings",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "mysql\\.connector\\.connect\\(",
+        "psycopg2\\.connect\\("
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayPythonByExtension",
+      "Description": "Files with these extensions will be searched for python related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["py"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepPyDbConnStrings",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "KeepRubyByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "database.yml",
+        ".secret_token.rb",
+        "knife.rb",
+        "carrierwave.rb",
+        "omniauth.rb"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepRubyDbConnStrings",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["DBI\\.connect\\("],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayRubyByExtension",
+      "Description": "Files with these extensions will be searched for Ruby related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["rb"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepRubyDbConnStrings",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw"
+      ]
+    },
+    {
+      "RuleName": "RelayShellScriptByExtension",
+      "Description": "Files with these extensions will be searched for Bash related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "netrc", "exports", "functions", "extra", "npmrc",
+        "env", "bashrc", "profile", "zshrc", "bash_history",
+        "zsh_history", "sh_history", "zhistory", "irb_history", "sh"
+      ],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation"
+      ]
+    },
+    {
+      "RuleName": "RelayVBScriptByExtension",
+      "Description": "Files with these extensions will be searched for cmd.exe/batch file related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["vbs", "vbe", "wsf", "wsc", "hta"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": [
+        "KeepCmdCredentials",
+        "KeepAwsKeysInCode",
+        "KeepInlinePrivateKey",
+        "KeepPassOrKeyInCode",
+        "KeepSlackTokensInCode",
+        "KeepSqlAccountCreation",
+        "KeepDbConnStringPw",
+        "KeepCSharpDbConnStringsRed",
+        "KeepCSharpDbConnStringsYellow"
+      ]
+    }
+  ]
+}

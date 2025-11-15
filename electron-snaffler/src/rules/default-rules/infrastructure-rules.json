@@ -1,0 +1,301 @@
+{
+  "ClassifierRules": [
+    {
+      "RuleName": "RelayCertByExtension",
+      "Description": "Files with these extensions will be parsed as x509 certificates to see if they have private keys.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["pem", "der", "pfx", "pk12", "p12", "pkcs12"],
+      "MatchAction": "CheckForKeys",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepJenkinsByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin.xml",
+        "credentials.xml"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepDatabaseByExtension",
+      "Description": "Files with these extensions are a little interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["mdf", "sdf", "sqldump", "bak"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepDefenderConfigByName",
+      "Description": "Files containing Defender Configs are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["SensorConfiguration.json", "mdatp_managed.json"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepDeployImageByExtension",
+      "Description": "Files with these extensions are a little interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["wim", "ova", "ovf"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepDomainJoinCredsByName",
+      "Description": "Files containing Domain Join Creds are quite interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["customsettings.ini"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepDomainJoinCredsByPath",
+      "Description": "Files with a path containing these strings are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FilePath",
+      "WordListType": "Contains",
+      "WordList": ["control\\customsettings.ini"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepSCCMBootVarCredsByPath",
+      "Description": "Files with a path containing these strings are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FilePath",
+      "WordListType": "Regex",
+      "WordList": [
+        "REMINST\\\\SMSTemp\\\\.*\\.var",
+        "SMS\\\\data\\\\Variables.dat",
+        "SMS\\\\data\\\\Policy.xml"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "RelayUnattendXml",
+      "Description": "Look inside unattend.xml files for actual values.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["unattend.xml", "Autounattend.xml"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": ["KeepUnattendXmlRegexRed"]
+    },
+    {
+      "RuleName": "KeepUnattendXmlRegexRed",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "(?s)<AdministratorPassword>.{0,30}<Value>.*<\\/Value>",
+        "(?s)<AutoLogon>.{0,30}<Value>.*<\\/Value>"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepFtpServerConfigByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["proftpdpasswd", "filezilla.xml"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepInfraAsCodeByExtension",
+      "Description": "Files with these extensions are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["cscfg", "ucs", "tfvars"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepMemDumpByExtension",
+      "Description": "Files with these extensions are a little interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["dmp"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepMemDumpByName",
+      "Description": "Files with these exact names are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "MEMORY.DMP",
+        "hiberfil.sys",
+        "lsass.dmp",
+        "lsass.exe.dmp"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepNetConfigCreds",
+      "Description": "Network device configuration credentials.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": [
+        "NVRAM config last updated",
+        "enable password \\.",
+        "simple-bind authenticated encrypt",
+        "pac key [0-7] ",
+        "snmp-server community\\s.+\\sRW"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepNetConfigFileByName",
+      "Description": "Files with these exact names are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "running-config.cfg",
+        "startup-config.cfg",
+        "running-config",
+        "startup-config"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "RelayNetConfigByName",
+      "Description": "Files with these name patterns will be searched for Cisco bits.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Contains",
+      "WordList": ["cisco", "router", "firewall", "switch"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": ["KeepNetConfigCreds"]
+    },
+    {
+      "RuleName": "KeepKerberosCredentialsByExtension",
+      "Description": "Files with these extensions are interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["keytab", "CCACHE"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepKerberosCredentialsByName",
+      "Description": "Files with these names are interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Regex",
+      "WordList": ["krb5cc_.*"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepNixLocalHashesByName",
+      "Description": "Files with these exact names are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["shadow", "pwd.db", "passwd"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepCyberArkConfigsByName",
+      "Description": "Files with these exact names are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "Psmapp.cred",
+        "psmgw.cred",
+        "backup.key",
+        "MasterReplicationUser.pass",
+        "RecPrv.key",
+        "ReplicationUser.pass",
+        "Server.key",
+        "VaultEmergency.pass",
+        "VaultUser.pass",
+        "Vault.ini",
+        "PADR.ini",
+        "PARAgent.ini",
+        "CACPMScanner.exe.config",
+        "PVConfiguration.xml"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepCyberArkByExtension",
+      "Description": "Files with these extensions are QUITE interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["cred", "pass"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepPcapByExtension",
+      "Description": "Files with these extensions are a little interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["pcap", "cap", "pcapng"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "RelayInfraConfigByExtension",
+      "Description": "Files with these extensions will be subjected to a generic search for keys and such.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "xml", "json", "config", "ini", "inf",
+        "cnf", "conf", "txt"
+      ],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": ["KeepNetConfigCreds"]
+    },
+    {
+      "RuleName": "KeepWinHashesByName",
+      "Description": "Files with these exact names are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["NTDS.DIT", "SYSTEM", "SAM", "SECURITY"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    }
+  ]
+}

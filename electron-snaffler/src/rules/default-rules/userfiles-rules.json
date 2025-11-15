@@ -1,0 +1,249 @@
+{
+  "ClassifierRules": [
+    {
+      "RuleName": "KeepNameContainsGreen",
+      "Description": "Files with password-related terms in name.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Contains",
+      "WordList": ["passw", "secret", "credential", "thycotic", "cyberark"],
+      "MatchAction": "Snaffle",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "KeepCloudApiKeysByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [".tugboat"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepCloudApiKeysByPath",
+      "Description": "Files with a path containing these strings are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FilePath",
+      "WordListType": "Contains",
+      "WordList": ["\\.aws\\", "doctl\\config.yaml"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepFfLoginsJsonRelay",
+      "Description": "Files with these extensions will be searched for Firefox/Thunderbird backups related strings.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["logins.json"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": ["KeepFFRegexRed"]
+    },
+    {
+      "RuleName": "KeepFFRegexRed",
+      "Description": "Files with contents matching these regexes are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["\"encryptedPassword\":\"[A-Za-z0-9+/=]+\""],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepDbMgtConfigByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "SqlStudio.bin",
+        ".mysql_history",
+        ".psql_history",
+        ".pgpass",
+        ".dbeaver-data-sources.xml",
+        "credentials-config.json",
+        "dbvis.xml",
+        "robomongo.json"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepGitCredsByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [".git-credentials"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepShellHistoryByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        ".bash_history",
+        ".zsh_history",
+        ".sh_history",
+        "zhistory",
+        ".irb_history",
+        "ConsoleHost_History.txt"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "KeepShellRcFilesByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        ".netrc",
+        "_netrc",
+        ".exports",
+        ".functions",
+        ".extra",
+        ".npmrc",
+        ".env",
+        ".bashrc",
+        ".profile",
+        ".zshrc"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "KeepPassMgrsByExtension",
+      "Description": "Files with these extensions are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "kdbx", "kdb", "psafe3", "kwallet", "keychain",
+        "agilekeychain"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepPasswordFilesByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "passwords.txt", "pass.txt", "accounts.txt",
+        "passwords.doc", "pass.doc", "accounts.doc",
+        "passwords.xls", "pass.xls", "accounts.xls",
+        "passwords.docx", "pass.docx", "accounts.docx",
+        "passwords.xlsx", "pass.xlsx", "accounts.xlsx",
+        "secrets.txt", "secrets.doc", "secrets.xls",
+        "secrets.docx", "BitlockerLAPSPasswords.csv", "secrets.xlsx"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepFtpClientConfigConfigByName",
+      "Description": "Files with these exact names are very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["recentservers.xml", "sftp-config.json"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepRdpPasswords",
+      "Description": "Files with contents matching these regexen are very interesting.",
+      "EnumerationScope": "ContentsEnumeration",
+      "MatchLocation": "FileContentAsString",
+      "WordListType": "Regex",
+      "WordList": ["password 51\\:b"],
+      "MatchAction": "Snaffle",
+      "Triage": "Red"
+    },
+    {
+      "RuleName": "KeepRemoteAccessConfByExtension",
+      "Description": "Files with these extensions are a little interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["rdg", "rtsz", "rtsx", "ovpn", "tvopt", "sdtid"],
+      "MatchAction": "Snaffle",
+      "Triage": "Yellow"
+    },
+    {
+      "RuleName": "KeepRemoteAccessConfByName",
+      "Description": "Files with these exact names are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "mobaxterm.ini",
+        "mobaxterm backup.zip",
+        "confCons.xml"
+      ],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "RelayRdpByExtension",
+      "Description": "Look inside .rdp files for actual values.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["rdp"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": ["KeepRdpPasswords"]
+    },
+    {
+      "RuleName": "KeepSSHKeysByFileName",
+      "Description": "SSH private keys.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": ["id_rsa", "id_dsa", "id_ecdsa", "id_ed25519"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepSSHFilesByPath",
+      "Description": "Files with a path containing these strings are very very interesting.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FilePath",
+      "WordListType": "Contains",
+      "WordList": ["\\.ssh\\"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "KeepSSHKeysByFileExtension",
+      "Description": "PuTTY private keys.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": ["ppk"],
+      "MatchAction": "Snaffle",
+      "Triage": "Black"
+    },
+    {
+      "RuleName": "CertContentByEnding",
+      "Description": "Files ending like this will be grepped for private keys.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "EndsWith",
+      "WordList": ["_rsa", "_dsa", "_ed25519", "_ecdsa"],
+      "MatchAction": "Relay",
+      "Triage": "Green",
+      "RelayTargets": ["KeepInlinePrivateKey"]
+    }
+  ]
+}

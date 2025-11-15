@@ -1,0 +1,64 @@
+{
+  "ClassifierRules": [
+    {
+      "RuleName": "DiscardByFileExtension",
+      "Description": "Skip any further scanning for files with these extensions.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileExtension",
+      "WordListType": "Exact",
+      "WordList": [
+        "bmp", "eps", "gif", "ico", "jfi", "jfif", "jif",
+        "jpe", "jpeg", "jpg", "png", "psd", "svg", "tif",
+        "tiff", "webp", "xcf", "ttf", "otf", "lock", "css",
+        "less", "admx", "adml", "xsd", "nse", "xsl"
+      ],
+      "MatchAction": "Discard",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "DiscardByFileName",
+      "Description": "Skip any further scanning for files with these names.",
+      "EnumerationScope": "FileEnumeration",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "jmxremote.password.template",
+        "sceregvl.inf"
+      ],
+      "MatchAction": "Discard",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "DiscardPostMatchByName",
+      "Description": "Post-match check for specific filenames",
+      "EnumerationScope": "PostMatch",
+      "MatchLocation": "FileName",
+      "WordListType": "Exact",
+      "WordList": [
+        "credentialprovider.idl",
+        "pspasswd64.exe",
+        "pspasswd.exe",
+        "psexec.exe",
+        "psexec64.exe"
+      ],
+      "MatchAction": "Discard",
+      "Triage": "Green"
+    },
+    {
+      "RuleName": "DiscardPostMatchByPath",
+      "Description": "Post-match check for specific path elements",
+      "EnumerationScope": "PostMatch",
+      "MatchLocation": "FilePath",
+      "WordListType": "Contains",
+      "WordList": [
+        "Windows Kits\\10",
+        "Git\\mingw64",
+        "Git\\usr\\lib",
+        "ProgramData\\Microsoft\\NetFramework\\BreadcrumbStore",
+        ".MSSQLSERVER\\MSSQL\\Binn\\Templates"
+      ],
+      "MatchAction": "Discard",
+      "Triage": "Green"
+    }
+  ]
+}

@@ -1,33 +1,33 @@
 {
   "ClassifierRules": [
     {
-      "RuleName": "InterestingShares",
-      "Description": "Shares that are likely to contain interesting data",
+      "RuleName": "DiscardNonFileShares",
+      "Description": "Skips scanning inside shares ending with these words.",
       "EnumerationScope": "ShareEnumeration",
       "MatchLocation": "ShareName",
-      "WordListType": "Contains",
-      "WordList": ["backup", "share", "data", "files", "docs", "users", "home"],
-      "MatchAction": "Relay",
+      "WordListType": "EndsWith",
+      "WordList": ["print$", "ipc$"],
+      "MatchAction": "Discard",
       "Triage": "Green"
     },
     {
-      "RuleName": "AdminShares",
-      "Description": "Administrative shares",
+      "RuleName": "KeepDollarShares",
+      "Description": "Notifies the user that they can read C$ or ADMIN$ or something fun/noisy, but doesn't actually scan inside it.",
       "EnumerationScope": "ShareEnumeration",
       "MatchLocation": "ShareName",
-      "WordListType": "Regex",
-      "WordList": ["^[A-Z]\\$$", "^ADMIN\\$$", "^IPC\\$$"],
-      "MatchAction": "Discard",
+      "WordListType": "EndsWith",
+      "WordList": ["C$", "ADMIN$"],
+      "MatchAction": "Snaffle",
       "Triage": "Black"
     },
     {
-      "RuleName": "SystemShares",
-      "Description": "SYSVOL and NETLOGON shares",
+      "RuleName": "KeepSCCMShares",
+      "Description": "Notifies the user that they can read SCCMContentLib$ so they can take CMLoot for a spin.",
       "EnumerationScope": "ShareEnumeration",
       "MatchLocation": "ShareName",
-      "WordListType": "Exact",
-      "WordList": ["SYSVOL", "NETLOGON"],
-      "MatchAction": "Relay",
+      "WordListType": "EndsWith",
+      "WordList": ["SCCMContentLib$"],
+      "MatchAction": "Snaffle",
       "Triage": "Yellow"
     }
   ]
