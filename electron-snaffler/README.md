@@ -18,6 +18,20 @@ This is a complete rewrite of Snaffler (originally C# .NET) in TypeScript/Node.j
 - ✅ **React Hook** - `useSnaffler()` hook for easy React integration
 - ✅ **Event-Driven** - Real-time updates via callbacks and events
 - ✅ **TypeScript** - Full type safety and IntelliSense support
+- ✅ **Complete Rule Set** - All 95 rules from original Snaffler ported to JSON
+
+### Detection Rules
+
+This port includes **all 95 detection rules** from the original Snaffler, organized into 6 categories:
+
+- **Code Rules** (43 rules) - Credentials in C#, PowerShell, Python, PHP, Java, Ruby, JavaScript, etc.
+- **Infrastructure Rules** (26 rules) - Certificates, databases, network configs, memory dumps, hashes
+- **User Files Rules** (20 rules) - SSH keys, password managers, browser credentials, API keys
+- **Discard Rules** (4 rules) - Filter false positives and noise
+- **Path Rules** (2 rules) - Skip Windows system and development directories
+- **Share Rules** (3 rules) - Filter admin shares, SCCM, IPC$
+
+See [RULES.md](RULES.md) for complete documentation of all detection rules.
 
 ## Installation
 
@@ -423,9 +437,10 @@ interface UseSnafflerReturn {
 ### What's the Same
 
 1. **Core Logic**: Same classification and scanning algorithms
-2. **Rule System**: Compatible rule structure and matching logic
+2. **Rule System**: All 95 rules ported with compatible structure and matching logic
 3. **Features**: Share enumeration, AD queries, content scanning
-4. **Triage Levels**: Same severity classification
+4. **Triage Levels**: Same severity classification (Black/Red/Yellow/Green)
+5. **Detection Coverage**: Identical pattern matching for credentials, keys, and sensitive data
 
 ### Platform Notes
 
